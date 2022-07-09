@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const models = require("./models");
 const port = 8080;
 
 app.use(express.json());
@@ -31,4 +32,14 @@ app.post("/products", function (req, res) {
 
 app.listen(port, () => {
 	console.log("망고샵 서버 실행중");
+	models.sequelize
+		.sync()
+		.then(() => {
+			console.log("DB 연결 성공");
+		})
+		.catch((err) => {
+      console.log("DB 연결 실패");
+      console.error(err);
+      process.exit();
+    });
 });

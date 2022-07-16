@@ -9,7 +9,7 @@ const upload = multer({
 			cb(null, "uploads");
 		},
 		filename: function (req, file, cb) {
-			cb(null, file.originalname)
+			cb(null, file.originalname);
 		},
 	}),
 });
@@ -63,7 +63,7 @@ app.post("/products", function (req, res) {
 		description,
 		price,
 		seller,
-		imageUrl
+		imageUrl,
 	})
 		.then((result) => {
 			console.log("상품생성결과:", result);
@@ -80,6 +80,18 @@ app.post("/image", upload.single("image"), (req, res) => {
 	res.send({
 		imageUrl: file.path,
 	});
+});
+
+app.get("/banners", (req, res) => {
+	models.Banner.findAll({
+		limit:2,
+	}).then((result)=>{
+		res.send({
+			banners:result,
+		})
+	}).catch((error)=>{
+		res.status(500).send('에러가 발생했습니다.',error)
+	})
 });
 
 app.listen(port, () => {
